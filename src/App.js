@@ -2,16 +2,25 @@ import React, { useState } from 'react';
 import './style.css';
 import explorer from './data/folderData.js';
 import Folder from './components/folder.js';
+import useTraverseTree from './hooks/custom-traverse-tree.js';
 
 export default function App() {
   const [exploreData, setExplorerData] = useState(explorer);
+  const { insertNode } = useTraverseTree();
 
-  console.log(exploreData, 'check');
+  const handleInsertNode = (folderId, currentValue, isFolder) => {
+    const updatedTree = insertNode(
+      exploreData,
+      folderId,
+      currentValue,
+      isFolder
+    );
+    setExplorerData(updatedTree);
+  };
 
   return (
     <div>
-      <h1>Hello StackBlitz!</h1>
-      <Folder explorer={exploreData} />
+      <Folder explorer={exploreData} handleInsertNode={handleInsertNode} />
     </div>
   );
 }
